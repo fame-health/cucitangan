@@ -8,11 +8,15 @@ use App\Filament\Resources\Nurses\Pages\ListNurses;
 use App\Filament\Resources\Nurses\Schemas\NurseForm;
 use App\Filament\Resources\Nurses\Tables\NursesTable;
 use App\Models\Nurse;
+use App\Models\User;
 use BackedEnum;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class NurseResource extends Resource
 {
@@ -30,6 +34,49 @@ class NurseResource extends Resource
     public static function table(Table $table): Table
     {
         return NursesTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        if ($user?->role === 'admin') {
+            return $query;
+        }
+
+        return $query->where('user_id', $user?->id);
+    }
+
+    public static function canCreate(): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        if ($user?->role === 'admin') {
+            return true;
+        }
+
+        return ! Nurse::where('user_id', $user?->id)->exists();
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin'
+            || $record->user_id === $user?->id;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin';
     }
 
     public static function getRelations(): array

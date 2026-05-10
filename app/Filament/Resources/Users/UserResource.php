@@ -8,12 +8,15 @@ use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\Tables\UsersTable;
 use App\Models\User;
 use BackedEnum;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
 {
@@ -52,13 +55,58 @@ class UserResource extends Resource
                         'perawat' => 'Perawat',
                     ])
                     ->required()
-                    ->default('perawat'),
+                    ->default('perawat')
+                    ->visible(function (): bool {
+                        /** @var User|null $user */
+                        $user = Filament::auth()->user();
+
+                        return $user?->role === 'admin';
+                    }),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return UsersTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        if ($user?->role === 'admin') {
+            return $query;
+        }
+
+        return $query->where('id', $user?->id);
+    }
+
+    public static function canCreate(): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin';
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin'
+            || $user?->id === $record->getKey();
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin';
     }
 
     public static function getRelations(): array

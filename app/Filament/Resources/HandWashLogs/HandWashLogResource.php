@@ -8,11 +8,15 @@ use App\Filament\Resources\HandWashLogs\Pages\ListHandWashLogs;
 use App\Filament\Resources\HandWashLogs\Schemas\HandWashLogForm;
 use App\Filament\Resources\HandWashLogs\Tables\HandWashLogsTable;
 use App\Models\HandWashLog;
+use App\Models\User;
 use BackedEnum;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class HandWashLogResource extends Resource
 {
@@ -30,6 +34,37 @@ class HandWashLogResource extends Resource
     public static function table(Table $table): Table
     {
         return HandWashLogsTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        if ($user?->role === 'admin') {
+            return $query;
+        }
+
+        return $query->where('nurse_id', $user?->nurse?->id);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin'
+            || $record->nurse_id === $user?->nurse?->id;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        /** @var User|null $user */
+        $user = Filament::auth()->user();
+
+        return $user?->role === 'admin';
     }
 
     public static function getRelations(): array

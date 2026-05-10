@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\HandWashLog;
+use App\Models\Nurse;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Auth;
@@ -24,18 +25,38 @@ class HandWashStats extends StatsOverviewWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Cuci Tangan Hari Ini', HandWashLog::whereDate('tanggal', today())->count()),
+            Stat::make('Total Perawat', Nurse::count())
+                ->description('Semua data perawat')
+                ->descriptionIcon('heroicon-m-users')
+                ->color('primary'),
+
+            Stat::make('Perawat Laki-laki', Nurse::where('jenis_kelamin', 'L')->count())
+                ->description('Jumlah perawat laki-laki')
+                ->descriptionIcon('heroicon-m-user')
+                ->color('info'),
+
+            Stat::make('Perawat Perempuan', Nurse::where('jenis_kelamin', 'P')->count())
+                ->description('Jumlah perawat perempuan')
+                ->descriptionIcon('heroicon-m-user')
+                ->color('success'),
+
+            Stat::make('Cuci Tangan Hari Ini', HandWashLog::whereDate('tanggal', today())->count())
+                ->description('Total aktivitas hari ini')
+                ->descriptionIcon('heroicon-m-calendar-days')
+                ->color('warning'),
 
             Stat::make('Cuci Tangan Minggu Ini', HandWashLog::whereBetween('tanggal', [
                 now()->startOfWeek(),
                 now()->endOfWeek(),
-            ])->count()),
+            ])->count())
+                ->description('Total aktivitas minggu ini')
+                ->descriptionIcon('heroicon-m-chart-bar')
+                ->color('info'),
 
-            Stat::make('Cuci Tangan Bulan Ini', HandWashLog::whereMonth('tanggal', now()->month)
-                ->whereYear('tanggal', now()->year)
-                ->count()),
-
-            Stat::make('Total Cuci Tangan', HandWashLog::count()),
+            Stat::make('Total Cuci Tangan', HandWashLog::count())
+                ->description('Semua aktivitas tercatat')
+                ->descriptionIcon('heroicon-m-hand-raised')
+                ->color('success'),
         ];
     }
 }

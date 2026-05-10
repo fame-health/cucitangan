@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Nurses\Schemas;
 
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,12 +16,16 @@ class NurseForm
     {
         return $schema
             ->components([
+
                 Hidden::make('user_id')
                     ->default(fn () => Auth::id())
                     ->required(),
 
                 TextInput::make('nama')
                     ->label('Nama')
+                    ->default(fn () => Filament::auth()->user()?->name)
+                    ->disabled()
+                    ->dehydrated(true)
                     ->required()
                     ->maxLength(255),
 
@@ -30,13 +35,13 @@ class NurseForm
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
 
-Select::make('jenis_kelamin')
-    ->label('Jenis Kelamin')
-    ->options([
-        'L' => 'Laki-laki',
-        'P' => 'Perempuan',
-    ])
-    ->required(),
+                Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options([
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->required(),
 
                 TextInput::make('no_hp')
                     ->label('No HP')
