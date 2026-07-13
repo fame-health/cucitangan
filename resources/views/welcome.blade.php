@@ -37,6 +37,11 @@
             scroll-behavior: smooth;
         }
 
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -179,6 +184,7 @@
         h3,
         p {
             margin: 0;
+            overflow-wrap: break-word;
         }
 
         h1 {
@@ -647,42 +653,438 @@
             }
 
             .hero-visual {
-                order: -1;
+                order: 0;
             }
         }
 
         @media (max-width: 640px) {
+            body {
+                background: #ffffff;
+            }
+
             .topbar-inner,
             .section-inner {
-                width: min(100% - 26px, 1080px);
+                width: min(100% - 24px, 1080px);
             }
 
             .topbar-inner {
-                align-items: flex-start;
-                flex-direction: column;
-                padding: 12px 0;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+                min-height: auto;
+                padding: 10px 0;
             }
 
-            .nav-actions,
+            .brand {
+                flex: 1 1 100%;
+                min-width: 0;
+                font-size: 0.96rem;
+            }
+
+            .brand > span:last-child {
+                min-width: 0;
+            }
+
+            .brand-mark {
+                width: 32px;
+                height: 32px;
+                font-size: 0.84rem;
+            }
+
+            .brand small {
+                font-size: 0.68rem;
+            }
+
+            .nav-actions {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+                width: 100%;
+            }
+
             .button {
                 width: 100%;
+                min-width: 0;
+                min-height: 36px;
+                padding: 0 10px;
+                overflow: hidden;
+                font-size: 0.78rem;
+                text-overflow: ellipsis;
+                line-height: 1.15;
+                white-space: normal;
+            }
+
+            .nav-actions .button:first-child {
+                font-size: 0;
+            }
+
+            .nav-actions .button:first-child::after {
+                content: "Alur";
+                font-size: 0.78rem;
+            }
+
+            .nav-actions .button-primary {
+                font-size: 0;
+            }
+
+            .nav-actions .button-primary::after {
+                content: "Dashboard";
+                font-size: 0.78rem;
+            }
+
+            .hero {
+                border-bottom-color: #f3d4e2;
+            }
+
+            .hero-grid {
+                display: block;
+                padding: 24px 0 26px;
+            }
+
+            .eyebrow {
+                margin-bottom: 10px;
+                padding: 5px 9px;
+                font-size: 0.72rem;
+            }
+
+            h1 {
+                font-size: 1.58rem;
+                line-height: 1.14;
+            }
+
+            h2 {
+                font-size: 1.28rem;
+                line-height: 1.22;
+            }
+
+            .hero-copy {
+                margin-top: 12px;
+                font-size: 0.9rem;
+                line-height: 1.55;
+            }
+
+            .hero-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-top: 16px;
+            }
+
+            .hero-note {
+                margin-top: 12px;
+                font-size: 0.78rem;
+                line-height: 1.45;
+            }
+
+            .hero-visual {
+                margin-top: 18px;
+                box-shadow: 0 10px 24px rgba(190, 24, 93, 0.09);
+            }
+
+            .visual-header {
+                align-items: flex-start;
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .status-pill {
+                flex: 0 1 auto;
+                min-width: 0;
+                max-width: none;
+                white-space: nowrap;
+                text-align: right;
+                font-size: 0;
+                line-height: 1.25;
+            }
+
+            .status-pill::after {
+                content: "Real-time";
+                font-size: 0.66rem;
+            }
+
+            .visual-body {
+                padding: 12px;
+            }
+
+            .snapshot-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .snapshot-item {
+                min-height: 68px;
+                padding: 10px;
+            }
+
+            .snapshot-label {
+                font-size: 0.68rem;
+                line-height: 1.25;
+            }
+
+            .snapshot-value {
+                margin-top: 5px;
+                font-size: 1.28rem;
+            }
+
+            .snapshot-desc {
+                display: none;
+            }
+
+            .mini-flow {
+                gap: 7px;
+                margin-top: 10px;
+            }
+
+            .mini-flow-row {
+                grid-template-columns: 28px minmax(0, 1fr);
+                gap: 8px;
+                padding: 9px;
+                font-size: 0.78rem;
+                line-height: 1.35;
+            }
+
+            .mini-flow-row span:last-child {
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }
+
+            .mini-flow-number {
+                width: 28px;
+                height: 28px;
+                font-size: 0.78rem;
+            }
+
+            .band {
+                padding: 26px 0;
+            }
+
+            .section-heading {
+                gap: 7px;
+                margin-bottom: 14px;
+            }
+
+            .section-kicker {
+                font-size: 0.68rem;
+            }
+
+            .section-heading p {
+                font-size: 0.86rem;
+                line-height: 1.5;
+            }
+
+            .grid-2,
+            .grid-3,
+            .comparison,
+            .architecture {
+                gap: 10px;
+            }
+
+            .info-card,
+            .feature-card,
+            .simple-card,
+            .architecture-node {
+                padding: 12px;
+            }
+
+            .info-card h3,
+            .feature-card h3,
+            .simple-card h3 {
+                margin-bottom: 6px;
+                font-size: 0.92rem;
+            }
+
+            .info-card p,
+            .feature-card p,
+            .simple-card p,
+            .text-list {
+                font-size: 0.82rem;
+                line-height: 1.45;
+            }
+
+            .info-card,
+            .feature-card,
+            .simple-card,
+            .architecture-node,
+            .timeline-item div,
+            .flow-step {
+                min-width: 0;
+            }
+
+            .text-list {
+                gap: 7px;
+            }
+
+            .label-row {
+                gap: 5px;
+                margin-top: 9px;
+            }
+
+            .label {
+                padding: 4px 7px;
+                font-size: 0.68rem;
+            }
+
+            .flow-wrap {
+                padding: 0;
+                border: 0;
+                background: transparent;
+                overflow: visible;
+            }
+
+            .flow {
+                min-width: 0;
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .flow-step {
+                display: grid;
+                grid-template-columns: 32px minmax(0, 1fr);
+                column-gap: 10px;
+                min-height: 0;
+                padding: 11px;
+            }
+
+            .flow-step:not(:last-child)::after,
+            .flow-step:not(:last-child)::before {
+                display: none;
+            }
+
+            .flow-index {
+                grid-row: span 2;
+                width: 32px;
+                height: 32px;
+                margin-bottom: 0;
+            }
+
+            .flow-step h3 {
+                margin-bottom: 3px;
+                font-size: 0.88rem;
+            }
+
+            .flow-step p {
+                min-width: 0;
+                font-size: 0.78rem;
+                line-height: 1.35;
+            }
+
+            .architecture-node span {
+                font-size: 0.78rem;
+            }
+
+            .data-table,
+            .data-table thead,
+            .data-table tbody,
+            .data-table tr,
+            .data-table td {
+                display: block;
+            }
+
+            .data-table {
+                border: 0;
+                background: transparent;
+            }
+
+            .data-table thead {
+                display: none;
+            }
+
+            .data-table tr {
+                margin-bottom: 10px;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                background: #ffffff;
+                overflow: hidden;
+            }
+
+            .data-table td {
+                border-bottom: 1px solid var(--line);
+                padding: 9px 11px;
+                font-size: 0.8rem;
+            }
+
+            .data-table td:last-child {
+                border-bottom: 0;
+            }
+
+            .data-table td::before {
+                display: block;
+                margin-bottom: 3px;
+                color: var(--rose);
+                font-size: 0.66rem;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+
+            .data-table td:nth-child(1)::before {
+                content: "Data";
+            }
+
+            .data-table td:nth-child(2)::before {
+                content: "Fungsi";
+            }
+
+            .data-table td:nth-child(3)::before {
+                content: "Contoh";
+            }
+
+            .timeline {
+                gap: 8px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 30px minmax(0, 1fr);
+                gap: 8px;
+            }
+
+            .timeline-item::before {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+
+            .timeline-item div {
+                padding: 11px;
+            }
+
+            .timeline-item h3 {
+                font-size: 0.88rem;
+            }
+
+            .timeline-item p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+
+            .footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .brand small {
+                display: none;
+            }
+
+            .nav-actions {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.45rem;
             }
 
             .snapshot-grid {
                 grid-template-columns: 1fr;
             }
 
-            .band {
-                padding: 30px 0;
-            }
-
-            h1 {
-                font-size: 1.95rem;
-            }
-
-            .footer-inner {
-                align-items: flex-start;
+            .visual-header {
                 flex-direction: column;
+                gap: 6px;
             }
         }
     </style>
