@@ -22,7 +22,15 @@ class NurseResource extends Resource
 {
     protected static ?string $model = Nurse::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
+
+    protected static ?string $navigationLabel = 'Perawat';
+
+    protected static ?string $modelLabel = 'Perawat';
+
+    protected static ?string $pluralModelLabel = 'Perawat';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'nama';
 

@@ -22,7 +22,15 @@ class HandWashLogResource extends Resource
 {
     protected static ?string $model = HandWashLog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
+
+    protected static ?string $navigationLabel = 'Log Cuci Tangan';
+
+    protected static ?string $modelLabel = 'Log Cuci Tangan';
+
+    protected static ?string $pluralModelLabel = 'Log Cuci Tangan';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'handwashlog';
 

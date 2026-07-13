@@ -21,7 +21,15 @@ class ShiftResource extends Resource
 {
     protected static ?string $model = Shift::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
+
+    protected static ?string $navigationLabel = 'Shift';
+
+    protected static ?string $modelLabel = 'Shift';
+
+    protected static ?string $pluralModelLabel = 'Shift';
+
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $recordTitleAttribute = 'nama_shift';
 

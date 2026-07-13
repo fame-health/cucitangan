@@ -10,7 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class HandWashChart extends ChartWidget
 {
-    protected ?string $heading = 'Diagram Cuci Tangan Berdasarkan Shift 7 Hari Terakhir';
+    protected static bool $isLazy = false;
+
+    protected static ?int $sort = 3;
+
+    protected ?string $heading = 'Aktivitas Cuci Tangan 7 Hari';
+
+    protected ?string $description = 'Distribusi presensi berdasarkan shift.';
+
+    protected ?string $pollingInterval = '5s';
+
+    protected string $color = 'primary';
+
+    protected ?string $maxHeight = '270px';
+
+    protected int|string|array $columnSpan = [
+        'md' => 6,
+        'xl' => 8,
+    ];
 
     public static function canView(): bool
     {
@@ -26,16 +43,33 @@ class HandWashChart extends ChartWidget
         $shifts = Shift::orderBy('id')->get();
 
         $colors = [
-            1 => 'rgba(255, 99, 132, 0.8)',
-            2 => 'rgba(54, 162, 235, 0.8)',
-            3 => 'rgba(255, 206, 86, 0.8)',
-            4 => 'rgba(75, 192, 192, 0.8)',
-            5 => 'rgba(153, 102, 255, 0.8)',
-            6 => 'rgba(255, 159, 64, 0.8)',
+            1 => ['#db2777', 'rgba(219, 39, 119, 0.18)'],
+            2 => ['#0891b2', 'rgba(8, 145, 178, 0.16)'],
+            3 => ['#059669', 'rgba(5, 150, 105, 0.16)'],
+            4 => ['#7c3aed', 'rgba(124, 58, 237, 0.14)'],
+            5 => ['#f59e0b', 'rgba(245, 158, 11, 0.16)'],
+            6 => ['#e11d48', 'rgba(225, 29, 72, 0.14)'],
         ];
+
+        if ($shifts->isEmpty()) {
+            return [
+                'datasets' => [
+                    [
+                        'label' => 'Belum ada shift',
+                        'data' => array_fill(0, $dates->count(), 0),
+                        'backgroundColor' => 'rgba(219, 39, 119, 0.12)',
+                        'borderColor' => '#db2777',
+                        'borderRadius' => 8,
+                    ],
+                ],
+                'labels' => $dates->map(fn (Carbon $date): string => $date->format('d M'))->toArray(),
+            ];
+        }
 
         return [
             'datasets' => $shifts->map(function ($shift) use ($dates, $colors) {
+                $color = $colors[$shift->id] ?? ['#64748b', 'rgba(100, 116, 139, 0.16)'];
+
                 return [
                     'label' => $shift->nama_shift,
                     'data' => $dates->map(function ($date) use ($shift) {
@@ -43,16 +77,16 @@ class HandWashChart extends ChartWidget
                             ->where('shift_id', $shift->id)
                             ->count();
                     })->toArray(),
-                    'backgroundColor' => $colors[$shift->id] ?? 'rgba(201, 203, 207, 0.8)',
-                    'borderColor' => '#ffffff',
-                    'borderWidth' => 2,
+                    'backgroundColor' => $color[1],
+                    'borderColor' => $color[0],
+                    'borderRadius' => 8,
+                    'borderWidth' => 1,
+                    'hoverBackgroundColor' => $color[0],
                     'stack' => 'shift',
                 ];
             })->toArray(),
 
-            'labels' => $dates->map(function ($date) {
-                return $date->format('d M');
-            })->toArray(),
+            'labels' => $dates->map(fn (Carbon $date): string => $date->format('d M'))->toArray(),
         ];
     }
 
@@ -62,12 +96,29 @@ class HandWashChart extends ChartWidget
             'scales' => [
                 'x' => [
                     'stacked' => true,
+                    'grid' => [
+                        'display' => false,
+                    ],
                 ],
                 'y' => [
                     'stacked' => true,
                     'beginAtZero' => true,
+                    'ticks' => [
+                        'precision' => 0,
+                    ],
                 ],
             ],
+            'plugins' => [
+                'legend' => [
+                    'position' => 'bottom',
+                    'labels' => [
+                        'boxWidth' => 10,
+                        'boxHeight' => 10,
+                        'usePointStyle' => true,
+                    ],
+                ],
+            ],
+            'maintainAspectRatio' => false,
         ];
     }
 
