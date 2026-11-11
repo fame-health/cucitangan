@@ -222,90 +222,15 @@
             overflow: hidden;
         }
 
-        .visual-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            border-bottom: 1px solid var(--line);
-            padding: 14px;
-            background: #ffffff;
+        .hero-image {
+            aspect-ratio: 16 / 10;
         }
 
-        .status-pill {
-            border-radius: 999px;
-            padding: 5px 9px;
-            background: var(--green-soft);
-            color: var(--green);
-            font-size: 0.74rem;
-            font-weight: 700;
-        }
-
-        .visual-body {
-            padding: 14px;
-        }
-
-        .snapshot-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        .snapshot-item {
-            min-height: 92px;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 12px;
-            background: #ffffff;
-        }
-
-        .snapshot-label {
-            color: var(--muted);
-            font-size: 0.76rem;
-            font-weight: 600;
-        }
-
-        .snapshot-value {
-            margin-top: 6px;
-            font-size: 1.5rem;
-            font-weight: 800;
-            line-height: 1;
-        }
-
-        .snapshot-desc {
-            margin-top: 6px;
-            color: var(--muted);
-            font-size: 0.76rem;
-            line-height: 1.38;
-        }
-
-        .mini-flow {
-            display: grid;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .mini-flow-row {
-            display: grid;
-            grid-template-columns: 32px minmax(0, 1fr);
-            gap: 10px;
-            align-items: center;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 10px;
-            background: #ffffff;
-            font-size: 0.86rem;
-        }
-
-        .mini-flow-number {
-            display: grid;
-            width: 32px;
-            height: 32px;
-            place-items: center;
-            border-radius: 8px;
-            background: var(--teal-soft);
-            color: var(--teal);
-            font-weight: 800;
+        .hero-image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .band {
@@ -782,79 +707,6 @@
                 box-shadow: 0 10px 24px rgba(190, 24, 93, 0.09);
             }
 
-            .visual-header {
-                align-items: flex-start;
-                padding: 12px;
-                font-size: 0.9rem;
-            }
-
-            .status-pill {
-                flex: 0 1 auto;
-                min-width: 0;
-                max-width: none;
-                white-space: nowrap;
-                text-align: right;
-                font-size: 0;
-                line-height: 1.25;
-            }
-
-            .status-pill::after {
-                content: "Real-time";
-                font-size: 0.66rem;
-            }
-
-            .visual-body {
-                padding: 12px;
-            }
-
-            .snapshot-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 8px;
-            }
-
-            .snapshot-item {
-                min-height: 68px;
-                padding: 10px;
-            }
-
-            .snapshot-label {
-                font-size: 0.68rem;
-                line-height: 1.25;
-            }
-
-            .snapshot-value {
-                margin-top: 5px;
-                font-size: 1.28rem;
-            }
-
-            .snapshot-desc {
-                display: none;
-            }
-
-            .mini-flow {
-                gap: 7px;
-                margin-top: 10px;
-            }
-
-            .mini-flow-row {
-                grid-template-columns: 28px minmax(0, 1fr);
-                gap: 8px;
-                padding: 9px;
-                font-size: 0.78rem;
-                line-height: 1.35;
-            }
-
-            .mini-flow-row span:last-child {
-                min-width: 0;
-                overflow-wrap: anywhere;
-            }
-
-            .mini-flow-number {
-                width: 28px;
-                height: 28px;
-                font-size: 0.78rem;
-            }
-
             .band {
                 padding: 26px 0;
             }
@@ -1078,14 +930,6 @@
                 font-size: 1.45rem;
             }
 
-            .snapshot-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .visual-header {
-                flex-direction: column;
-                gap: 6px;
-            }
         }
     </style>
 </head>
@@ -1138,51 +982,13 @@
                         </p>
                     </div>
 
-                    <aside class="hero-visual" aria-label="Ringkasan dashboard aplikasi">
-                        <div class="visual-header">
-                            <strong>Ringkasan Sistem</strong>
-                            <span class="status-pill">Data real-time panel</span>
-                        </div>
-                        <div class="visual-body">
-                            <div class="snapshot-grid">
-                                <div class="snapshot-item">
-                                    <div class="snapshot-label">Peran pengguna</div>
-                                    <div class="snapshot-value">2</div>
-                                    <div class="snapshot-desc">Admin dan perawat dengan akses data yang berbeda.</div>
-                                </div>
-                                <div class="snapshot-item">
-                                    <div class="snapshot-label">Master data</div>
-                                    <div class="snapshot-value">3</div>
-                                    <div class="snapshot-desc">Perawat, ruangan, dan shift sebagai dasar pencatatan.</div>
-                                </div>
-                                <div class="snapshot-item">
-                                    <div class="snapshot-label">Log utama</div>
-                                    <div class="snapshot-value">1</div>
-                                    <div class="snapshot-desc">Setiap aksi cuci tangan tercatat sebagai log terstruktur.</div>
-                                </div>
-                                <div class="snapshot-item">
-                                    <div class="snapshot-label">Analisis</div>
-                                    <div class="snapshot-value">7</div>
-                                    <div class="snapshot-desc">Grafik aktivitas berjalan untuk tujuh hari terakhir.</div>
-                                </div>
-                            </div>
-
-                            <div class="mini-flow" aria-label="Alur singkat">
-                                <div class="mini-flow-row">
-                                    <span class="mini-flow-number">1</span>
-                                    <span>Admin menyiapkan data perawat, ruangan, dan shift.</span>
-                                </div>
-                                <div class="mini-flow-row">
-                                    <span class="mini-flow-number">2</span>
-                                    <span>Perawat memilih ruangan dan shift, lalu mencatat cuci tangan.</span>
-                                </div>
-                                <div class="mini-flow-row">
-                                    <span class="mini-flow-number">3</span>
-                                    <span>Dashboard menampilkan statistik, grafik, dan aktivitas terbaru.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
+                    <div class="hero-visual hero-image">
+                        <img
+                            src="{{ asset('images/cuci-tangan-hero.jpg') }}"
+                            alt="Perawat mencuci tangan di wastafel rumah sakit"
+                            fetchpriority="high"
+                        >
+                    </div>
                 </div>
             </section>
 
